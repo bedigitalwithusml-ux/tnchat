@@ -15,9 +15,18 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Ensure upload directory exists
-const uploadDir = path.join(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadDir)) {
+// Netlify serverless request path middleware
+app.use((req, res, next) => {
+  if (req.url.startsWith('/.netlify/functions/api')) {
+    req.url = req.url.replace('/.netlify/functions/api', '/api');
+  }
+  next();
+});
+
+// Ensure upload directory exists safely for local / serverless
+const isNetlify = Boolean(process.env.NETLIFY || process.env.NETLIFY_LOCAL);
+const uploadDir = isNetlify ? '/tmp' : path.join(process.cwd(), 'uploads');
+if (!isNetlify && !fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
@@ -422,9 +431,11 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
 });
 
-// Start Express server when run directly
-app.listen(PORT, async () => {
-  console.log(`❤️ Our Private Space server running at http://localhost:${PORT}`);
-});
+// Start Express server when run directly (local dev only)
+if (!process.env.NETLIFY && !process.env.NETLIFY_LOCAL) {
+  app.listen(PORT, async () => {
+    console.log(`❤️ Our Private Space server running at http://localhost:${PORT}`);
+  });
+}
 
 export default app;

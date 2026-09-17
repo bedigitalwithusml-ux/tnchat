@@ -36,8 +36,34 @@ class NetlifyBlobProvider {
   }
 
   // --- Users ---
+  async getSeededUsers() {
+    let users = await this.getData('users', null);
+    if (!users || users.length === 0) {
+      users = [
+        {
+          id: 'user_1',
+          username: 'tishu1221',
+          name: 'Tishu',
+          passwordHash: 'none',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: 'user_2',
+          username: 'bugu1221',
+          name: 'Bugu',
+          passwordHash: 'none',
+          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+          createdAt: new Date().toISOString()
+        }
+      ];
+      await this.setData('users', users);
+    }
+    return users;
+  }
+
   async getUser(id) {
-    const users = await this.getData('users', []);
+    const users = await this.getSeededUsers();
     const user = users.find(u => u.id === id);
     if (!user) return null;
     const { passwordHash, ...safeUser } = user;
@@ -45,22 +71,22 @@ class NetlifyBlobProvider {
   }
 
   async getUserWithHash(id) {
-    const users = await this.getData('users', []);
+    const users = await this.getSeededUsers();
     return users.find(u => u.id === id) || null;
   }
 
   async getUserByUsername(username) {
-    const users = await this.getData('users', []);
+    const users = await this.getSeededUsers();
     return users.find(u => u.username.toLowerCase() === username.toLowerCase()) || null;
   }
 
   async getUsers() {
-    const users = await this.getData('users', []);
+    const users = await this.getSeededUsers();
     return users.map(({ passwordHash, ...u }) => u);
   }
 
   async createUser(user) {
-    const users = await this.getData('users', []);
+    const users = await this.getSeededUsers();
     users.push(user);
     await this.setData('users', users);
     return this.getUser(user.id);

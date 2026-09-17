@@ -98,7 +98,7 @@ class PrivateChatApp {
 
   bindEvents() {
     // Auth Form & Quick Buttons
-    this.loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+    this.loginForm?.addEventListener('submit', (e) => this.handleLogin(e));
 
     document.querySelectorAll('.quick-user-card').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -109,7 +109,7 @@ class PrivateChatApp {
 
     if (this.toggleManualLoginBtn) {
       this.toggleManualLoginBtn.addEventListener('click', () => {
-        this.loginForm.classList.toggle('hidden');
+        this.loginForm?.classList.toggle('hidden');
       });
     }
 
@@ -123,68 +123,68 @@ class PrivateChatApp {
 
     if (this.sendFirstMsgBtn) {
       this.sendFirstMsgBtn.addEventListener('click', () => {
-        this.messageInput.value = '👋 Hey!';
+        if (this.messageInput) this.messageInput.value = '👋 Hey!';
         this.sendMessage();
       });
     }
 
     // Message Input & Composer
-    this.messagesContainer.addEventListener('scroll', () => {
+    this.messagesContainer?.addEventListener('scroll', () => {
       if (this.messagesContainer.scrollTop <= 40 && !this.isLoadingOlder && this.hasMoreOlder && this.messages.length > 0) {
         this.loadOlderMessages();
       }
     });
 
-    this.messageInput.addEventListener('input', () => {
+    this.messageInput?.addEventListener('input', () => {
       this.autoResizeTextarea();
       this.toggleSendButton();
       this.handleTypingHeartbeat();
     });
 
-    this.messageInput.addEventListener('keydown', (e) => {
+    this.messageInput?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         this.sendMessage();
       }
     });
 
-    this.sendMsgBtn.addEventListener('click', () => this.sendMessage());
-    this.sendHeartBtn.addEventListener('click', () => {
-      this.messageInput.value = '❤️';
+    this.sendMsgBtn?.addEventListener('click', () => this.sendMessage());
+    this.sendHeartBtn?.addEventListener('click', () => {
+      if (this.messageInput) this.messageInput.value = '❤️';
       this.sendMessage();
     });
 
     // File Attachments
-    this.attachBtn.addEventListener('click', () => this.fileInput.click());
-    this.fileInput.addEventListener('change', (e) => this.handleFileSelection(e));
-    this.cancelAttachmentBtn.addEventListener('click', () => this.clearPendingAttachments());
+    this.attachBtn?.addEventListener('click', () => this.fileInput?.click());
+    this.fileInput?.addEventListener('change', (e) => this.handleFileSelection(e));
+    this.cancelAttachmentBtn?.addEventListener('click', () => this.clearPendingAttachments());
 
     // Cancel state buttons
-    this.cancelReplyBtn.addEventListener('click', () => this.clearReplyState());
-    this.cancelEditBtn.addEventListener('click', () => this.clearEditState());
+    this.cancelReplyBtn?.addEventListener('click', () => this.clearReplyState());
+    this.cancelEditBtn?.addEventListener('click', () => this.clearEditState());
 
     // Drawers Toggles
-    this.searchToggleBtn.addEventListener('click', () => this.toggleDrawer(this.searchDrawer));
-    this.closeSearchBtn.addEventListener('click', () => this.searchDrawer.classList.add('hidden'));
-    this.searchInput.addEventListener('input', () => this.handleSearch());
+    this.searchToggleBtn?.addEventListener('click', () => this.toggleDrawer(this.searchDrawer));
+    this.closeSearchBtn?.addEventListener('click', () => this.searchDrawer?.classList.add('hidden'));
+    this.searchInput?.addEventListener('input', () => this.handleSearch());
 
-    this.pinnedToggleBtn.addEventListener('click', () => {
+    this.pinnedToggleBtn?.addEventListener('click', () => {
       this.toggleDrawer(this.pinnedDrawer);
       this.loadPinnedMessages();
     });
-    this.closePinnedBtn.addEventListener('click', () => this.pinnedDrawer.classList.add('hidden'));
+    this.closePinnedBtn?.addEventListener('click', () => this.pinnedDrawer?.classList.add('hidden'));
 
-    this.memoriesToggleBtn.addEventListener('click', () => {
+    this.memoriesToggleBtn?.addEventListener('click', () => {
       this.toggleDrawer(this.memoriesDrawer);
       this.loadMemories();
     });
-    this.closeMemoriesBtn.addEventListener('click', () => this.memoriesDrawer.classList.add('hidden'));
-    this.saveMemoryBtn.addEventListener('click', () => this.handleSaveMemory());
+    this.closeMemoriesBtn?.addEventListener('click', () => this.memoriesDrawer?.classList.add('hidden'));
+    this.saveMemoryBtn?.addEventListener('click', () => this.handleSaveMemory());
 
     // Lightbox Close
-    this.closeLightboxBtn.addEventListener('click', () => this.lightboxModal.classList.add('hidden'));
-    this.lightboxModal.addEventListener('click', (e) => {
-      if (e.target === this.lightboxModal) this.lightboxModal.classList.add('hidden');
+    this.closeLightboxBtn?.addEventListener('click', () => this.lightboxModal?.classList.add('hidden'));
+    this.lightboxModal?.addEventListener('click', (e) => {
+      if (e.target === this.lightboxModal) this.lightboxModal?.classList.add('hidden');
     });
   }
 
