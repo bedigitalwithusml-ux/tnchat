@@ -1,0 +1,25 @@
+{
+  "version": "1.0.0",
+  "exportedAt": "2026-09-17T10:44:09.705Z",
+  "users": [
+    {
+      "id": "user_1",
+      "username": "Alex",
+      "name": "Alex",
+      "avatar": null,
+      "bio": "In our private space ❤️",
+      "created_at": "2026-09-17T10:44:04.681Z"
+    },
+    {
+      "id": "user_2",
+      "username": "Sam",
+      "name": "Sam",
+      "avatar": null,
+      "bio": "Forever & always ❤️",
+      "created_at": "2026-09-17T10:44:04.710Z"
+    }
+  ],
+  "messages": [],
+  "pinned": [],
+  "memories": []
+}

@@ -1,0 +1,36 @@
+{
+  "name": "our-private-space",
+  "version": "1.0.0",
+  "description": "A private, secure, production-quality 2-person chat web application",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "setup": "node scripts/setup.js",
+    "backup": "node scripts/backup.js",
+    "restore": "node scripts/restore.js",
+    "build": "echo 'Build complete'"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0",
+    "@netlify/functions": "^3.0.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "keywords": [
+    "chat",
+    "private",
+    "two-person",
+    "netlify"
+  ],
+  "author": "",
+  "license": "MIT"
+}
