@@ -5,6 +5,7 @@ class NetlifyBlobProvider {
   constructor() {
     this.storeName = process.env.NETLIFY_BLOBS_STORE || 'private_chat_store';
     this.getStore = null;
+    this.fallbackMap = new Map();
   }
 
   async getStoreInstance() {
@@ -19,19 +20,20 @@ class NetlifyBlobProvider {
     try {
       const store = await this.getStoreInstance();
       const val = await store.get(key, { type: 'json' });
-      return val !== null && val !== undefined ? val : defaultValue;
+      if (val !== null && val !== undefined) return val;
     } catch (e) {
       console.warn(`NetlifyBlobs fallback warning for ${key}:`, e.message);
-      return defaultValue;
     }
+    return this.fallbackMap.has(key) ? this.fallbackMap.get(key) : defaultValue;
   }
 
   async setData(key, value) {
+    this.fallbackMap.set(key, value);
     try {
       const store = await this.getStoreInstance();
       await store.setJSON(key, value);
     } catch (e) {
-      console.error(`NetlifyBlobs write error for ${key}:`, e.message);
+      console.warn(`NetlifyBlobs write error for ${key}:`, e.message);
     }
   }
 
