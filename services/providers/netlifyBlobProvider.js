@@ -9,11 +9,16 @@ class NetlifyBlobProvider {
   }
 
   async getStoreInstance() {
-    if (!this.getStore) {
-      const netlifyBlobs = await import('@netlify/blobs');
-      this.getStore = netlifyBlobs.getStore;
+    try {
+      if (!this.getStore) {
+        const netlifyBlobs = await import('@netlify/blobs');
+        this.getStore = netlifyBlobs.getStore;
+      }
+      return this.getStore({ name: this.storeName });
+    } catch (e) {
+      console.warn('getStoreInstance warning:', e.message);
+      return null;
     }
-    return this.getStore({ name: this.storeName });
   }
 
   async getData(key, defaultValue) {

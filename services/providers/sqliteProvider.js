@@ -1,9 +1,23 @@
-import { DatabaseSync } from 'node:sqlite';
 import path from 'node:path';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
 
 class SqliteProvider {
   constructor(dbPath) {
+    let DatabaseSync;
+    try {
+      const sqliteMod = require('node:sqlite');
+      DatabaseSync = sqliteMod.DatabaseSync;
+    } catch (e) {
+      console.warn('[SqliteProvider] node:sqlite module not available in this Node runtime.');
+    }
+
+    if (!DatabaseSync) {
+      throw new Error('node:sqlite is not supported in this Node environment.');
+    }
+
     const dir = path.dirname(dbPath);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });

@@ -19,6 +19,9 @@ const PORT = process.env.PORT || 3000;
 app.use((req, res, next) => {
   if (req.url.startsWith('/.netlify/functions/api')) {
     req.url = req.url.replace('/.netlify/functions/api', '/api');
+    if (req.url === '/api/' || req.url === '') req.url = '/api';
+  } else if (!req.url.startsWith('/api') && req.url !== '/' && !req.url.startsWith('/css') && !req.url.startsWith('/js') && !req.url.startsWith('/images')) {
+    req.url = '/api' + (req.url.startsWith('/') ? '' : '/') + req.url;
   }
   next();
 });
